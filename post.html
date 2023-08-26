@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+   <style>
+    h1{
+        text-align: center;
+        font-size: 5rem;
+        cursor: pointer;
+    }
+    section{
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        gap: 20px;
+        padding: 20px;
+    }
+    .postCard{
+        padding: 20px;
+        border-radius: 8px;
+        background-color: rgba(0, 255, 255, 0.441);
+        box-shadow: 0px 0px 10px gray;
+    }
+    @media  (max-width:768px) {
+        section{
+            grid-template-columns: 1fr;
+        }
+    }
+    @media  (max-width:1024px) {
+        section{
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+   </style>
+</head>
+<body>
+    <div style="display: flex; justify-content: center; gap: 20px;">
+        <h1 onclick="ff()"><button>Post</button></h1>
+        <h1 onclick="CB()"><button>comment</button></h1>
+    </div>
+    <section id="post-container">
+
+    </section>
+    <section id="comment">
+
+    </section>
+    <script>
+        // for post 
+        function ff() {
+            fetch("https://jsonplaceholder.typicode.com/posts")
+            .then(res => res.json())
+            .then(data => postFunctio(data))
+        }
+        function postFunctio(bal) {
+            document.getElementById('comment').style.display = "none";
+            document.getElementById('post-container').style.display = "block";
+            document.getElementById('post-container').style.display = "grid";
+            let postContainer = document.getElementById('post-container');
+            for (const post of bal) {
+                let div  = document.createElement("div");
+                div.classList.add('postCard')
+                div.innerHTML = `
+                 <h2>user id: ${post.userId}</h2>
+                 <h4>${post.title}</h4>
+                 <p>${post.body}</p>
+                `
+                postContainer.appendChild(div)
+            }
+        }
+        // for comment 
+        function CB() {
+            fetch("https://jsonplaceholder.typicode.com/comments")
+            .then(rest => rest.json())
+            .then(datas => CommentBox(datas))
+        }
+        function CommentBox(bal) {
+            document.getElementById('post-container').style.display = "none";
+            document.getElementById('comment').style.display = "block";
+            document.getElementById('comment').style.display = "grid";
+            let postContainer = document.getElementById('comment');
+            for (const post of bal) {
+                let div  = document.createElement("div");
+                div.classList.add('postCard')
+                div.innerHTML = `
+                 <h2>user id: ${post.id}</h2>
+                 <h4>${post.email}</h4>
+                 <p>${post.body}</p>
+                `
+                postContainer.appendChild(div)
+                console.log(post)
+            }
+        }
+    </script>
+</body>
+</html>
